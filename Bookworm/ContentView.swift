@@ -10,10 +10,9 @@ import SwiftUI
 struct ContentView: View {
     
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: [
-        SortDescriptor(\.title),
-        SortDescriptor(\.author)
-    ]) var books: FetchedResults<Book>
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.title),
+                                    SortDescriptor(\.author)],
+                  animation: .default) var books: FetchedResults<Book>
     
     @State private var showingAddScreen = false
     
@@ -58,11 +57,13 @@ struct ContentView: View {
                 AddBookView()
             }
         }
+        .navigationViewStyle(.stack)
     }
     
     func deleteBooks(at offsets: IndexSet) {
         for offset in offsets {
             let book = books[offset]
+            print("offset : \(offset), book: \(book)")
             moc.delete(book)
         }
         
